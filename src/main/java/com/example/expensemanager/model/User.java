@@ -1,92 +1,45 @@
 package com.example.expensemanager.model;
 
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
-import javax.management.relation.Role;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users",
-       uniqueConstraints = {
-               @UniqueConstraint(columnNames = "username"),
-               @UniqueConstraint(columnNames = "email")
-       })
+@Table(name = "users") // Đặt tên bảng là "users" để tránh trùng với từ khóa SQL "user"
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 50)
-    private String username;
+    @Column(nullable = false, unique = true)
+    private String username; // Tên đăng nhập, phải là duy nhất
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    private String email;
+    @Column(nullable = false)
+    private String password; // Mật khẩu đã mã hóa
 
-    @NotBlank
-    @Size(max = 120)
-    private String password;
+    @Column(nullable = false)
+    private String email;    // Email người dùng
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>(); // Nếu muốn thêm roles trong tương lai
+    // Các trường thông tin người dùng khác (ví dụ: firstName, lastName, ...)
+    private String firstName;
+    private String lastName;
 
-    // Constructors, Getters, Setters
-    public User() {
-    }
+    @ManyToMany(fetch = FetchType.LAZY) // Quan hệ Many-to-Many với Role, FetchType.LAZY để tránh load roles khi không cần thiết
+    @JoinTable(name = "user_roles", // Bảng trung gian để lưu quan hệ Many-to-Many
+            joinColumns = @JoinColumn(name = "user_id"), // Khóa ngoại tham chiếu đến bảng users
+            inverseJoinColumns = @JoinColumn(name = "role_id")) // Khóa ngoại tham chiếu đến bảng roles
+    private Set<Role> roles = new HashSet<>(); // Set các vai trò của người dùng
 
+    // Constructors
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }

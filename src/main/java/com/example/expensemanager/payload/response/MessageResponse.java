@@ -1,4 +1,4 @@
-package com.example.expensemanager.payload.reponse;
+package com.example.expensemanager.payload.response;
 
 public class MessageResponse {
     private String message;

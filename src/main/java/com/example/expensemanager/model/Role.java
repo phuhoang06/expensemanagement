@@ -1,39 +1,25 @@
 package com.example.expensemanager.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles") // Tên bảng là "roles"
+@Getter
+@Setter
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // Lưu trữ enum name dưới dạng String trong database
     @Column(length = 20)
-    private ERole name; // Enum ERole (USER, MODERATOR, ADMIN)
-
-    // Constructors, Getters, Setters
-    public Role() {
-    }
+    private ERole name; // Tên vai trò (sử dụng enum ERole)
 
     public Role(ERole name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public ERole getName() {
-        return name;
-    }
-
-    public void setName(ERole name) {
         this.name = name;
     }
 }
