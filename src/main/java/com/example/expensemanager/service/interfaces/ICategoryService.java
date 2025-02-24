@@ -1,6 +1,5 @@
 package com.example.expensemanager.service.interfaces;
 
-import com.example.expensemanager.model.Category;
 import com.example.expensemanager.payload.request.CategoryRequest;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.example.expensemanager.service.interfaces;
 
-import com.example.expensemanager.model.Transaction;
 import com.example.expensemanager.payload.request.TransactionRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

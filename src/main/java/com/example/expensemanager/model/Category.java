@@ -1,66 +1,38 @@
+// Category.java
 package com.example.expensemanager.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
+@Getter
+@Setter
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 50)
-    private String name; // Tên danh mục (ví dụ: "Ăn uống")
+    @Column(nullable = false, unique = true) // Tên category nên unique
+    private String name;
 
-    @Size(max = 255)
-    private String description; // Mô tả danh mục (optional)
-
+    private String description; // Mô tả (optional)
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user; // Danh mục thuộc về User nào (phân quyền dữ liệu)
+    @JoinColumn(name = "user_id", nullable = false) // Thêm user_id vào Category
+    private User user;
 
-    // Constructors, Getters, Setters
-    public Category() {
-    }
-
-    public Category(String name, String description, User user) {
-        this.name = name;
-        this.description = description;
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    // Không cần mappedBy ở đây, vì quan hệ đã được định nghĩa ở Transaction.
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions;
+    
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Budget> budgets;
+    
+    // Constructors, getters, and setters (Lombok sẽ tự generate)
 }

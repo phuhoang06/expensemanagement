@@ -1,8 +1,6 @@
 package com.example.expensemanager.service;
 
 import com.example.expensemanager.exception.ResourceNotFoundException;
-import com.example.expensemanager.model.Reminder;
-import com.example.expensemanager.model.Transaction;
 import com.example.expensemanager.payload.request.ReminderRequest;
 import com.example.expensemanager.repository.ReminderRepository;
 import com.example.expensemanager.repository.TransactionRepository;

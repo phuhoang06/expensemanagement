@@ -1,6 +1,5 @@
 package com.example.expensemanager.repository;
 
-import com.example.expensemanager.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

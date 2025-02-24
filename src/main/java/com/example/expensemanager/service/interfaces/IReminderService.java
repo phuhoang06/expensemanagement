@@ -1,6 +1,5 @@
 package com.example.expensemanager.service.interfaces;
 
-import com.example.expensemanager.model.Reminder;
 import com.example.expensemanager.payload.request.ReminderRequest;
 
 import java.util.List;

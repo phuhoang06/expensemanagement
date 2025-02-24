@@ -1,7 +1,6 @@
 package com.example.expensemanager.service;
 
 import com.example.expensemanager.exception.ResourceNotFoundException;
-import com.example.expensemanager.model.Category;
 import com.example.expensemanager.payload.request.CategoryRequest;
 import com.example.expensemanager.repository.CategoryRepository;
 import com.example.expensemanager.repository.UserRepository;

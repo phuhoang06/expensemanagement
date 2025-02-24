@@ -1,6 +1,5 @@
 package com.example.expensemanager.service.interfaces;
 
-import com.example.expensemanager.model.BankAccount;
 import com.example.expensemanager.payload.request.BankAccountRequest;
 
 import java.util.List;

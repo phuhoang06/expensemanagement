@@ -1,6 +1,5 @@
 package com.example.expensemanager.service.interfaces;
 
-import com.example.expensemanager.model.Budget;
 import com.example.expensemanager.payload.request.BudgetRequest;
 
 import java.util.List;

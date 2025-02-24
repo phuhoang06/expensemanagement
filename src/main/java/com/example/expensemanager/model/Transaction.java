@@ -1,122 +1,57 @@
+// Transaction.java
 package com.example.expensemanager.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
+@Getter
+@Setter
 public class Transaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private LocalDate transactionDate; // Ngày giao dịch
+    private String description;
 
-    @NotBlank
-    @Size(max = 255)
-    private String description; // Mô tả giao dịch
+    @Column(nullable = false)
+    private BigDecimal amount;
 
-    @NotNull
-    @Digits(integer=12, fraction=2)
-    private BigDecimal amount; // Số tiền giao dịch
+    @Column(nullable = false)
+    private LocalDate date;
+    
+    private LocalDateTime createdAt; // Thêm trường thời gian tạo
+    private LocalDateTime updatedAt; // Thêm trường thời gian cập nhật
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private TransactionType type; // Loại giao dịch: THU (INCOME) hoặc CHI (EXPENSE) - Enum TransactionType
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category; // Giao dịch thuộc về Category nào
+    @ManyToOne(fetch = FetchType.LAZY) // Quan trọng: LAZY loading
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user; // Giao dịch thuộc về User nào
-
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bank_account_id")
-    private BankAccount bankAccount; // Tài khoản ngân hàng liên quan (optional)
+    @JoinColumn(name = "bank_account_id") // Có thể null (cho tiền mặt)
+    private BankAccount bankAccount;
 
-    // Constructors, Getters, Setters
-    public Transaction() {
+    @PrePersist // Trước khi lưu
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+    
+    @PreUpdate // Trước khi cập nhật
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
-    public Transaction(LocalDate transactionDate, String description, BigDecimal amount, TransactionType type, Category category, User user, BankAccount bankAccount) {
-        this.transactionDate = transactionDate;
-        this.description = description;
-        this.amount = amount;
-        this.type = type;
-        this.category = category;
-        this.user = user;
-        this.bankAccount = bankAccount;
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDate getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public void setType(TransactionType type) {
-        this.type = type;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-    }
 }
