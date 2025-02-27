@@ -1,53 +1,32 @@
+// BudgetRequest.java
 package com.example.expensemanager.payload.request;
-
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BudgetRequest {
-    @NotNull
-    @DecimalMin(value = "0.0", inclusive = false) // Hạn mức phải lớn hơn 0
+    @NotNull(message = "Amount cannot be null")
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
 
-    @NotNull
+    @NotNull(message = "Start date cannot be null")
+    @FutureOrPresent(message = "Start date must be in the future or present")
     private LocalDate startDate;
 
-    @NotNull
+    @NotNull(message = "End date cannot be null")
+    @FutureOrPresent(message = "End date must be in the future or present")
     private LocalDate endDate;
 
-    @NotNull
+    private String description;
+
+    @NotNull(message = "Category ID cannot be null")
     private Long categoryId;
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
 }

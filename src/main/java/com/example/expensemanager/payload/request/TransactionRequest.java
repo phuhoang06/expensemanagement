@@ -1,77 +1,33 @@
+// TransactionRequest.java
 package com.example.expensemanager.payload.request;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class TransactionRequest {
-    @NotNull
-    private LocalDate transactionDate;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import lombok.*;
 
-    @NotBlank
-    @Size(max = 255)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class TransactionRequest {
+
     private String description;
 
-    @NotNull
-    @DecimalMin(value = "0.0", inclusive = false) // Số tiền phải lớn hơn 0
+    @NotNull(message = "Amount cannot be null")
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
 
-    @NotBlank
-    private String type; // "INCOME" hoặc "EXPENSE"
+    @NotNull(message = "Date cannot be null")
+    @PastOrPresent(message = "Date must be in the past or present")
+    private LocalDate date;
 
-    @NotNull
+    @NotNull(message = "Category ID cannot be null")
     private Long categoryId;
 
     private Long bankAccountId; // Optional
-
-    public LocalDate getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDate transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Long getBankAccountId() {
-        return bankAccountId;
-    }
-
-    public void setBankAccountId(Long bankAccountId) {
-        this.bankAccountId = bankAccountId;
-    }
 }

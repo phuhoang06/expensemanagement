@@ -1,53 +1,24 @@
+// BankAccountRequest.java
 package com.example.expensemanager.payload.request;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import lombok.*;
+
 import java.math.BigDecimal;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BankAccountRequest {
-    @NotBlank
-    @Size(max = 50)
+
+    @NotBlank(message = "Account name cannot be blank")
     private String accountName;
 
-    @Size(max = 50)
-    private String accountNumber;
-
-    @Size(max = 50)
-    private String bankName;
-
-    @Digits(integer = 12, fraction = 2)
+    @NotNull(message = "Initial balance cannot be null")
+    @PositiveOrZero(message = "Initial balance must be positive or zero")
     private BigDecimal balance;
 
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
+    private String description;
 }
