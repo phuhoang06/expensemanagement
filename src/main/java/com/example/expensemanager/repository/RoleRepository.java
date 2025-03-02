@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository // Đánh dấu là Repository
+@Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    Optional<Role> findByName(ERole name); // Phương thức tìm Role theo tên (ERole)
+    Optional<Role> findByName(ERole name);
 }

@@ -1,45 +1,55 @@
-// User.java
 package com.example.expensemanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 @Getter
 @Setter
 @NoArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // (Optional) Các trường thông tin người dùng khác, ví dụ:
-    private String name;
-    private String email; // Có thể dùng để gửi thông báo nhắc nhở.
+    @NotBlank
+    @Size(max = 20)
+    private String username;
 
-    // Không có password, username (vì bỏ qua bảo mật)
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> transactions;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Budget> budgets;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reminder> reminders;
+    // Other fields and constructors
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BankAccount> bankAccounts;
-    
-    public User(Long id) {
-        this.id = id;
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
-
 }
